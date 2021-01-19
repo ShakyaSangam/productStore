@@ -20,8 +20,12 @@ class Repository {
         .updateData({"$fieldName": value});
   }
 
-  void billCheckOut(
-      {SellProductState sellProductState, int total, String buyerName}) async {
+  void billCheckOut({
+    SellProductState sellProductState,
+    int total,
+    String buyerName,
+    double discount,
+  }) async {
     DocumentReference documentReference =
         Firestore.instance.collection("sells").document();
     Firestore.instance
@@ -30,6 +34,7 @@ class Repository {
         .setData({
       "buyerName": buyerName,
       "total": total,
+      "discoutAmount": discount,
       "timeStamp": FieldValue.serverTimestamp()
     });
 
