@@ -63,81 +63,10 @@ class _FetchDataState extends State<FetchData> {
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
+                showCheckboxColumn: false,
+                sortAscending: true,
                 rows: _doc.map((e) {
-                  return DataRow(cells: <DataCell>[
-                    DataCell(
-                      Text(e.data["productName"]),
-                      onTap: () {
-                        setState(() {
-                          _controller.text = e.data["productName"];
-                        });
-                        customDialog(e, size, "productName", () {
-                          if (_key.currentState.validate()) {
-                            _repository.updateProduct(
-                                fieldName: "productName",
-                                docID: e.documentID,
-                                value: _controller.text);
-                            _controller.clear();
-                            Navigator.of(context).pop();
-                          }
-                        });
-                      },
-                    ),
-                    DataCell(
-                      Text(e.data["productSP"].toString()),
-                      onTap: () {
-                        setState(() {
-                          _controller.text = e.data["productSP"].toString();
-                        });
-                        customDialog(e, size, "productSP", () {
-                          if (_key.currentState.validate()) {
-                            _repository.updateProduct(
-                                fieldName: "productSP",
-                                docID: e.documentID,
-                                value: int.parse(_controller.text));
-                            _controller.clear();
-                            Navigator.of(context).pop();
-                          }
-                        });
-                      },
-                    ),
-                    DataCell(
-                      Text(e.data["productCP"].toString()),
-                      onTap: () {
-                        setState(() {
-                          _controller.text = e.data["productCP"].toString();
-                        });
-                        customDialog(e, size, "productCP", () {
-                          if (_key.currentState.validate()) {
-                            _repository.updateProduct(
-                                fieldName: "productCP",
-                                docID: e.documentID,
-                                value: int.parse(_controller.text));
-                            _controller.clear();
-                            Navigator.of(context).pop();
-                          }
-                        });
-                      },
-                    ),
-                    DataCell(
-                      Text(e.data["stock"].toString()),
-                      onTap: () {
-                        setState(() {
-                          _controller.text = e.data["stock"].toString();
-                        });
-                        customDialog(e, size, "stock", () {
-                          if (_key.currentState.validate()) {
-                            _repository.updateProduct(
-                                fieldName: "stock",
-                                docID: e.documentID,
-                                value: int.parse(_controller.text));
-                            _controller.clear();
-                            Navigator.of(context).pop();
-                          }
-                        });
-                      },
-                    ),
-                  ]);
+                  return buildDataRow(e, size, context);
                 }).toList(),
                 columns: <DataColumn>[
                   DataColumn(
@@ -160,6 +89,85 @@ class _FetchDataState extends State<FetchData> {
           }
         },
       ),
+    );
+  }
+
+  DataRow buildDataRow(DocumentSnapshot e, Size size, BuildContext context) {
+    return DataRow(
+      cells: <DataCell>[
+        DataCell(
+          Text(e.data["productName"]),
+          onTap: () {
+            setState(() {
+              _controller.text = e.data["productName"];
+            });
+            customDialog(e, size, "productName", () {
+              if (_key.currentState.validate()) {
+                _repository.updateProduct(
+                    fieldName: "productName",
+                    docID: e.documentID,
+                    value: _controller.text);
+                _controller.clear();
+                Navigator.of(context).pop();
+              }
+            });
+          },
+        ),
+        DataCell(
+          Text(e.data["productSP"].toString()),
+          onTap: () {
+            setState(() {
+              _controller.text = e.data["productSP"].toString();
+            });
+            customDialog(e, size, "productSP", () {
+              if (_key.currentState.validate()) {
+                _repository.updateProduct(
+                    fieldName: "productSP",
+                    docID: e.documentID,
+                    value: int.parse(_controller.text));
+                _controller.clear();
+                Navigator.of(context).pop();
+              }
+            });
+          },
+        ),
+        DataCell(
+          Text(e.data["productCP"].toString()),
+          onTap: () {
+            setState(() {
+              _controller.text = e.data["productCP"].toString();
+            });
+            customDialog(e, size, "productCP", () {
+              if (_key.currentState.validate()) {
+                _repository.updateProduct(
+                    fieldName: "productCP",
+                    docID: e.documentID,
+                    value: int.parse(_controller.text));
+                _controller.clear();
+                Navigator.of(context).pop();
+              }
+            });
+          },
+        ),
+        DataCell(
+          Text(e.data["stock"].toString()),
+          onTap: () {
+            setState(() {
+              _controller.text = e.data["stock"].toString();
+            });
+            customDialog(e, size, "stock", () {
+              if (_key.currentState.validate()) {
+                _repository.updateProduct(
+                    fieldName: "stock",
+                    docID: e.documentID,
+                    value: int.parse(_controller.text));
+                _controller.clear();
+                Navigator.of(context).pop();
+              }
+            });
+          },
+        ),
+      ],
     );
   }
 }
