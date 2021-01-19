@@ -43,10 +43,9 @@ class SearchData extends SearchDelegate {
           onTap: () {},
           leading: Text("Stock: " + suggestionsList[index].stock.toString()),
           trailing: Text("MRP: " + suggestionsList[index].productSP.toString()),
-          subtitle: Expanded(
-              child: Text("Cost price: " +
-                  suggestionsList[index].productCP.toString())),
-          title: Expanded(child: Text(suggestionsList[index].productName)),
+          subtitle: Text(
+              "Cost price: " + suggestionsList[index].productCP.toString()),
+          title: Text(suggestionsList[index].productName),
         );
       },
     );
