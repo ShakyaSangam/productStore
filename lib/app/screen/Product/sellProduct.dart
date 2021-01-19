@@ -23,6 +23,7 @@ class _SellProductState extends State<SellProduct> {
 
   TextEditingController _controller = TextEditingController();
   TextEditingController _buyerName = TextEditingController();
+  TextEditingController _discount = TextEditingController();
 
   String selectedValue;
   String qty = "1";
@@ -183,26 +184,41 @@ class _SellProductState extends State<SellProduct> {
         title: Text("Buyer Name"),
         content: Form(
           key: _key2,
-          child: inputTextWidget(
-            productName: _buyerName,
-            labelText: "Buyer Name",
-            hintText: "Name",
-            maxLength: 255,
-            keyboardType: TextInputType.text,
-            maxLines: 1,
-            validator: (String value) {
-              if (value.isEmpty) {
-                return "Invalid";
-              } else {
-                print(value);
-              }
-            },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                inputTextWidget(
+                  productName: _buyerName,
+                  labelText: "Buyer Name",
+                  hintText: "Name",
+                  maxLength: 255,
+                  keyboardType: TextInputType.text,
+                  maxLines: 1,
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return "Invalid";
+                    } else {
+                      print(value);
+                    }
+                  },
+                ),
+                inputTextWidget(
+                  productName: _discount,
+                  labelText: "Discount",
+                  hintText: "RS.",
+                  maxLength: 255,
+                  keyboardType: TextInputType.numberWithOptions(),
+                  maxLines: 1,
+                  validator: null,
+                )
+              ],
+            ),
           ),
         ),
         actions: [
           customButton(
             onTap,
-            "Update",
+            "Sell",
             Colors.green,
             size,
           ),
@@ -213,6 +229,8 @@ class _SellProductState extends State<SellProduct> {
 
   DataTable buildDataTable(
       SellProductState sellProductState, Size size, BuildContext context) {
+    _discount.text = "0";
+
     int total = sellProductState.productList.fold<int>(
         0, (previousValue, element) => element.soldPrice + previousValue);
     return DataTable(
@@ -235,17 +253,21 @@ class _SellProductState extends State<SellProduct> {
                   () {
                     if (_key2.currentState.validate()) {
                       _repository.billCheckOut(
-                        sellProductState: sellProductState,
-                        total: total,
-                        buyerName: _buyerName.text,
-                      );
+                          sellProductState: sellProductState,
+                          total: total,
+                          buyerName: _buyerName.text,
+                          discount: double.parse(_discount.text));
                       sellProductState.clearCart();
                       _buyerName.clear();
+                      _discount.clear();
                       Navigator.of(context).pop();
                     }
                   },
                 ),
-                child: Text("Sell", style: TextStyle(color: Colors.white),),
+                child: Text(
+                  "Sell",
+                  style: TextStyle(color: Colors.white),
+                ),
               )
             ],
           ),
